@@ -6,11 +6,9 @@ class AuthService {
     async register(data) {
         const { fullName, phone, password } = data;
 
-        // Telefon raqam bandligini tekshirish
         const candidate = await User.findOne({ where: { phone } });
         if (candidate) throw new Error('Bu telefon raqami allaqachon mavjud');
 
-        // Parolni shifrlash
         const hashedPassword = await bcrypt.hash(password, 12);
 
         const user = await User.create({
