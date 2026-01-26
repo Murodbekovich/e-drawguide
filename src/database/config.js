@@ -22,6 +22,14 @@ module.exports = {
         password: process.env.DB_PASS,
         database: process.env.DB_NAME,
         host: process.env.DB_HOST,
-        dialect: 'postgres'
+        port: process.env.DB_PORT,
+        dialect: 'postgres',
+        logging: false,
+        dialectOptions: {
+            ssl: {
+                require: true,
+                rejectUnauthorized: false // Cloud bazalar (Neon) uchun shart
+            }
+        }
     }
 };

@@ -20,7 +20,13 @@ const limiter = rateLimit({
 });
 app.use('/api/', limiter);
 
-app.use(cors());
+const corsOptions = {
+    origin: process.env.NODE_ENV === 'production' ? ['https://sizning-saytingiz.uz', 'http://localhost:3000'] : '*',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
+};
+
+app.use(cors(corsOptions));
 app.use(express.json({ limit: '10kb' }));
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 app.use(morgan('dev'));
