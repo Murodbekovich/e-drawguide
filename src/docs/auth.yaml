@@ -1,0 +1,60 @@
+tags:
+  name: Auth
+  description: Autentifikatsiya tizimi
+
+paths:
+  /auth/register:
+    post:
+      summary: Ro'yxatdan o'tish
+      tags: [Auth]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [fullName, phone, password]
+              properties:
+                fullName:
+                  type: string
+                phone:
+                  type: string
+                password:
+                  type: string
+      responses:
+        201:
+          description: Muvaffaqiyatli yaratildi
+
+  /auth/login:
+    post:
+      summary: Tizimga kirish
+      tags: [Auth]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [phone, password]
+              properties:
+                phone:
+                  type: string
+                password:
+                  type: string
+      responses:
+        200:
+          description: Token qaytariladi
+
+  /auth/profile:
+    get:
+      summary: Profil ma'lumotlari
+      tags: [Auth]
+      security:
+        - BearerAuth: []
+      responses:
+        200:
+          description: User profili
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'

@@ -1,0 +1,136 @@
+tags:
+  name: Admin
+  description: Admin boshqaruv paneli (Faqat adminlar uchun)
+
+paths:
+  /admin/users:
+    get:
+      summary: Barcha foydalanuvchilar ro'yxati (Pagination bilan)
+      tags: [Admin]
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+            default: 1
+          description: Sahifa raqami
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            default: 10
+          description: Bitta sahifadagi userlar soni
+      responses:
+        200:
+          description: Foydalanuvchilar ro'yxati muvaffaqiyatli qaytarildi
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/User'
+                  meta:
+                    type: object
+                    properties:
+                      total:
+                        type: integer
+                      pages:
+                        type: integer
+                      current:
+                        type: integer
+
+  /admin/library:
+    post:
+      summary: Yangi kitob yuklash (PDF va Rasm)
+      tags: [Admin]
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required: [title, author, language, book_file]
+              properties:
+                title:
+                  type: string
+                  example: "Chizmachilik asoslari"
+                author:
+                  type: string
+                  example: "A. Karimov"
+                language:
+                  type: string
+                  enum: [uz, ru, en]
+                  example: "uz"
+                book_file:
+                  type: string
+                  format: binary
+                  description: Kitob fayli (.pdf)
+                cover_file:
+                  type: string
+                  format: binary
+                  description: Muqova rasmi (.jpg, .png)
+      responses:
+        201:
+          description: Kitob muvaffaqiyatli yuklandi
+
+  /admin/videos:
+    post:
+      summary: Yangi video darslik qo'shish
+      tags: [Admin]
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required: [title, video_url]
+              properties:
+                title:
+                  type: string
+                  example: "1-dars. Kirish"
+                description:
+                  type: string
+                  example: "Dars haqida qisqacha"
+                video_url:
+                  type: string
+                  description: "YouTube yoki Server linki"
+                  example: "https://youtu.be/example"
+                thumbnail_file:
+                  type: string
+                  format: binary
+                  description: Video uchun rasm (.jpg, .png)
+      responses:
+        201:
+          description: Video muvaffaqiyatli qo'shildi
+
+  /admin/videos/{id}:
+    delete:
+      summary: Videoni o'chirish
+      tags: [Admin]
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: O'chiriladigan videoning ID raqami
+      responses:
+        200:
+          description: Video o'chirildi
+        404:
+          description: Video topilmadi

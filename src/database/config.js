@@ -28,7 +28,7 @@ module.exports = {
         dialectOptions: {
             ssl: {
                 require: true,
-                rejectUnauthorized: false // Cloud bazalar (Neon) uchun shart
+                rejectUnauthorized: false
             }
         }
     }
