@@ -2,33 +2,36 @@ const { Library } = require('../database');
 const { Op } = require('sequelize');
 const ApiFeatures = require('../utils/apiFeatures');
 const { CacheManager } = require('../utils/cache');
-const { removeFiles } = require('../utils/fileHelper');
 const AppError = require('../utils/AppError');
 const transactional = require('../utils/transactional');
+const StorageManager = require('../utils/storage');
 
 class LibraryService {
     create = transactional(async (data, files, transaction) => {
         const existingBook = await Library.findOne({
-            where: {
-                title: data.title,
-                author: data.author
-            },
+            where: { title: data.title, author: data.author },
             transaction
         });
 
-        if (existingBook) {
-            throw new AppError('Ushbu kitob bazada allaqachon mavjud!', 409);
-        }
+        if (existingBook) throw new AppError('Ushbu kitob bazada allaqachon mavjud!', 409);
 
         const bookFile = files['book_file'] ? files['book_file'][0] : null;
         const coverFile = files['cover_file'] ? files['cover_file'][0] : null;
+
+        if (!bookFile) throw new AppError('Kitob fayli yuklanishi shart', 400);
+
+        const file_url = await StorageManager.saveFile(bookFile, 'books');
+        let cover_url = null;
+        if (coverFile) {
+            cover_url = await StorageManager.saveImage(coverFile, 'covers', 500);
+        }
 
         const library = await Library.create({
             title: data.title,
             author: data.author,
             language: data.language,
-            file_url: `/uploads/books/${bookFile.filename}`,
-            cover_url: coverFile ? `/uploads/covers/${coverFile.filename}` : null
+            file_url,
+            cover_url
         }, { transaction });
 
         await CacheManager.invalidate('library:*');
@@ -37,13 +40,12 @@ class LibraryService {
 
     delete = transactional(async (id, transaction) => {
         const library = await Library.findByPk(id, { paranoid: false, transaction });
-        if (!library) throw new AppError('common.not_found', 404);
-
-        const fileUrls = [library.file_url, library.cover_url].filter(Boolean);
+        if (!library) throw new AppError('Kitob topilmadi', 404);
 
         if (library.deleted_at) {
+            await StorageManager.deleteFile(library.file_url);
+            await StorageManager.deleteFile(library.cover_url);
             await library.destroy({ force: true, transaction });
-            removeFiles(fileUrls);
         } else {
             await library.destroy({ transaction });
         }

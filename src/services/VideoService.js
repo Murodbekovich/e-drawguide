@@ -2,9 +2,9 @@ const { Video } = require('../database');
 const { Op } = require('sequelize');
 const ApiFeatures = require('../utils/apiFeatures');
 const { CacheManager } = require('../utils/cache');
-const { removeFiles } = require('../utils/fileHelper');
 const AppError = require('../utils/AppError');
 const transactional = require('../utils/transactional');
+const StorageManager = require('../utils/storage');
 
 class VideoService {
     async getAll(query) {
@@ -30,20 +30,16 @@ class VideoService {
     }
 
     create = transactional(async (data, file, transaction) => {
-        const existingVideo = await Video.findOne({
-            where: { video_url: data.video_url },
-            transaction
-        });
-
-        if (existingVideo) {
-            throw new AppError('Ushbu video linki bazada allaqachon mavjud!', 409);
+        let thumbnail_url = null;
+        if (file) {
+            thumbnail_url = await StorageManager.saveImage(file, 'thumbnails', 600);
         }
 
         const video = await Video.create({
             title: data.title,
             description: data.description,
             video_url: data.video_url,
-            thumbnail_url: file ? `/uploads/thumbnails/${file.filename}` : null
+            thumbnail_url
         }, { transaction });
 
         await CacheManager.invalidate('videos:*');
@@ -54,18 +50,13 @@ class VideoService {
         const video = await Video.findByPk(id, { transaction });
         if (!video) throw new AppError('Video topilmadi', 404);
 
-        await video.destroy({ transaction });
+        if (video.thumbnail_url) {
+            await StorageManager.deleteFile(video.thumbnail_url);
+        }
+
+        await video.destroy({ force: true, transaction });
         await CacheManager.invalidate('videos:*');
     });
-
-    async restore(id) {
-        const video = await Video.findByPk(id, { paranoid: false });
-        if (!video) throw new AppError('Video topilmadi', 404);
-
-        await video.restore();
-        await CacheManager.invalidate('videos:*');
-        return video;
-    }
 }
 
 module.exports = new VideoService();

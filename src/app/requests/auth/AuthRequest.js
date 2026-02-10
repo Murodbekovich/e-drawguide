@@ -1,5 +1,5 @@
 const Joi = require('joi');
-const { passwordRegex } = require('../../../utils/constants');
+const { PASSWORD_REGEX } = require('../../../utils/constants');
 
 const registerSchema = Joi.object({
     fullName: Joi.string().min(3).max(80).trim().required().messages({
@@ -10,7 +10,7 @@ const registerSchema = Joi.object({
         'string.pattern.base': "Telefon raqami noto'g'ri formatda",
         'any.required': "Telefon raqami yuborilishi shart"
     }),
-    password: Joi.string().pattern(passwordRegex).required().messages({
+    password: Joi.string().pattern(PASSWORD_REGEX).required().messages({
         'string.pattern.base': "Parol kamida 8 ta belgi, bitta katta harf, raqam va maxsus belgi bo'lishi shart"
     }),
     role: Joi.string().valid('student', 'admin').default('student')

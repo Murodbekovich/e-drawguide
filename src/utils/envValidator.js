@@ -1,4 +1,4 @@
-const { cleanEnv, str, port, url } = require('envalid');
+const { cleanEnv, str, port } = require('envalid');
 const logger = require('./logger');
 
 const validateEnv = () => {
@@ -15,7 +15,7 @@ const validateEnv = () => {
             JWT_REFRESH_SECRET: str(),
             JWT_ACCESS_EXPIRES_IN: str({ default: '15m' }),
             JWT_REFRESH_EXPIRES_IN: str({ default: '7d' }),
-            BASE_URL: url(),
+            BASE_URL: str(),
             REDIS_HOST: str({ default: '127.0.0.1' }),
             REDIS_PORT: port({ default: 6379 }),
             REDIS_PASSWORD: str({ default: '' })

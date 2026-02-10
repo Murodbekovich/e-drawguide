@@ -38,36 +38,37 @@ class QuizService {
         return quiz;
     }
 
-    async createQuiz(data) {
-        const quiz = await Quiz.create(data);
+    createQuiz = transactional(async (data, transaction) => {
+        const quiz = await Quiz.create(data, { transaction });
         await CacheManager.invalidate('quizzes:list:*');
         return quiz;
-    }
+    });
 
-    async addQuestion(quizId, questionData) {
-        const quiz = await Quiz.findByPk(quizId);
+    addQuestion = transactional(async (quizId, questionData, transaction) => {
+        const quiz = await Quiz.findByPk(quizId, { transaction });
         if (!quiz) throw new AppError('quiz.not_found', 404);
 
         const question = await Question.create({
             quiz_id: quizId,
             question_text: questionData.question_text,
             options: questionData.options,
-            correct_answer: questionData.correct_answer
-        });
+            correct_answer: questionData.correct_answer.trim().toUpperCase()
+        }, { transaction });
 
         await CacheManager.invalidate(`quiz:${quizId}:*`);
         await CacheManager.invalidate(`quiz_answers:${quizId}`);
         return question;
-    }
+    });
 
-    async submitQuiz(userId, quizId, userAnswers) {
+    submitQuiz = transactional(async (userId, quizId, userAnswers, transaction) => {
         const answersCacheKey = `quiz_answers:${quizId}`;
         let correctAnswersMap = await CacheManager.get(answersCacheKey);
 
         if (!correctAnswersMap) {
             const questions = await Question.scope('withAnswer').findAll({
                 where: { quiz_id: quizId },
-                attributes: ['id', 'correct_answer']
+                attributes: ['id', 'correct_answer'],
+                transaction
             });
 
             if (questions.length === 0) throw new AppError('quiz.no_questions', 404);
@@ -81,38 +82,35 @@ class QuizService {
         }
 
         let score = 0;
-        const processedIds = new Set();
-        const questionIds = Object.keys(correctAnswersMap);
+        const totalQuestions = Object.keys(correctAnswersMap).length;
+        const processedQuestions = new Set();
 
-        for (const ans of userAnswers) {
-            if (correctAnswersMap[ans.question_id] && !processedIds.has(ans.question_id)) {
-                const correct = correctAnswersMap[ans.question_id];
-                const student = String(ans.selected_option || '').trim().toUpperCase();
-                if (correct === student) score++;
-                processedIds.add(ans.question_id);
+        userAnswers.forEach(ans => {
+            if (!processedQuestions.has(ans.question_id)) {
+                const correctAnswer = correctAnswersMap[ans.question_id];
+                const studentAnswer = String(ans.selected_option || '').trim().toUpperCase();
+
+                if (correctAnswer && correctAnswer === studentAnswer) {
+                    score++;
+                }
+                processedQuestions.add(ans.question_id);
             }
-        }
+        });
 
-        const totalQuestions = questionIds.length;
-        const resultData = {
+        const result = await Result.create({
             user_id: userId,
             quiz_id: quizId,
             score: score,
             total_questions: totalQuestions
-        };
-
-        const savedResult = await this._saveResult(resultData);
+        }, { transaction });
 
         return {
+            result_id: result.id,
             correct: score,
             total: totalQuestions,
-            percentage: Math.round((score / totalQuestions) * 100) || 0,
-            result_id: savedResult.id
+            percentage: totalQuestions > 0 ? Math.round((score / totalQuestions) * 100) : 0,
+            submitted_at: result.created_at
         };
-    }
-
-    _saveResult = transactional(async (data, transaction) => {
-        return await Result.create(data, { transaction });
     });
 }
 

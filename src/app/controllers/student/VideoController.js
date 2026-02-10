@@ -1,11 +1,13 @@
-const VideoService = require('../../../services/VideoService');
-const VideoResource = require('../../resources/VideoResource');
 const catchAsync = require('../../../utils/catchAsync');
+const VideoResource = require('../../resources/VideoResource');
 
 class VideoController {
-    index = catchAsync(async (req, res) => {
-        const result = await VideoService.getAll(req.query);
+    constructor(videoService) {
+        this.videoService = videoService;
+    }
 
+    index = catchAsync(async (req, res) => {
+        const result = await this.videoService.getAll(req.query);
         res.status(200).json({
             success: true,
             data: VideoResource.collection(result).items,
@@ -14,4 +16,4 @@ class VideoController {
     });
 }
 
-module.exports = new VideoController();
+module.exports = VideoController;

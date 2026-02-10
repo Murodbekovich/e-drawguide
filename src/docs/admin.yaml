@@ -1,107 +1,8 @@
 paths:
-  /admin/library:
-    post:
-      tags: [Admin]
-      summary: Yangi kitob yuklash
-      security:
-        - bearerAuth: []
-      requestBody:
-        content:
-          multipart/form-data:
-            schema:
-              type: object
-              properties:
-                title: { type: string }
-                author: { type: string }
-                language: { type: string, enum: [uz, ru, en] }
-                book_file: { type: string, format: binary }
-                cover_file: { type: string, format: binary }
-      responses:
-        201:
-          description: OK
-  /admin/library/{id}:
-    delete:
-      tags: [Admin]
-      summary: Kitobni o'chirish
-      security:
-        - bearerAuth: []
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema: { type: string, format: uuid }
-      responses:
-        200:
-          description: OK
-  /admin/videos:
-    post:
-      tags: [Admin]
-      summary: Yangi video qo'shish
-      security:
-        - bearerAuth: []
-      requestBody:
-        content:
-          multipart/form-data:
-            schema:
-              type: object
-              properties:
-                title: { type: string }
-                description: { type: string }
-                video_url: { type: string }
-                thumbnail_file: { type: string, format: binary }
-      responses:
-        201:
-          description: OK
-  /admin/videos/{id}:
-    delete:
-      tags: [Admin]
-      summary: Videoni o'chirish
-      security:
-        - bearerAuth: []
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema: { type: string, format: uuid }
-      responses:
-        200:
-          description: OK
-  /admin/videos/{id}/restore:
-    patch:
-      tags: [Admin]
-      summary: O'chirilgan videoni qayta tiklash
-      security:
-        - bearerAuth: []
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema: { type: string, format: uuid }
-      responses:
-        200:
-          description: OK
-  /admin/users:
+  /admin/configs:
     get:
       tags: [Admin]
-      summary: Barcha talabalar ro'yxati
-      security:
-        - bearerAuth: []
-      responses:
-        200:
-          description: OK
-  /admin/results:
-    get:
-      tags: [Admin]
-      summary: Barcha talabalarning test natijalari
-      security:
-        - bearerAuth: []
-      responses:
-        200:
-          description: OK
-  /admin/quizzes:
-    get:
-      tags: [Admin]
-      summary: Testlar ro'yxati
+      summary: Ilova sozlamalarini olish
       security:
         - bearerAuth: []
       responses:
@@ -109,7 +10,7 @@ paths:
           description: OK
     post:
       tags: [Admin]
-      summary: Yangi test yaratish
+      summary: Ilova sozlamasini yangilash yoki yaratish
       security:
         - bearerAuth: []
       requestBody:
@@ -117,32 +18,15 @@ paths:
           application/json:
             schema:
               type: object
+              required: [platform, latest_version, minimum_version, update_url]
               properties:
-                title: { type: string }
-                is_active: { type: boolean }
+                platform: { type: string, enum: [android, ios] }
+                latest_version: { type: string }
+                minimum_version: { type: string }
+                update_url: { type: string }
+                is_force_update: { type: boolean }
+                message_uz: { type: string }
+                message_ru: { type: string }
       responses:
-        201:
-          description: OK
-  /admin/quizzes/{id}/questions:
-    post:
-      tags: [Admin]
-      summary: Testga savol qo'shish
-      security:
-        - bearerAuth: []
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema: { type: string, format: uuid }
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                question_text: { type: string }
-                options: { type: array, items: { type: object } }
-                correct_answer: { type: string }
-      responses:
-        201:
+        200:
           description: OK

@@ -1,4 +1,3 @@
-const VideoService = require('../../../services/VideoService');
 const VideoResource = require('../../resources/VideoResource');
 const catchAsync = require('../../../utils/catchAsync');
 
@@ -33,4 +32,4 @@ class VideoController {
     });
 }
 
-module.exports = new VideoController(VideoService);
+module.exports = VideoController;

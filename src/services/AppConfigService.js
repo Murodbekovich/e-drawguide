@@ -3,6 +3,15 @@ const semver = require('semver');
 const AppError = require('../utils/AppError');
 
 class AppConfigService {
+    async getAllConfigs() {
+        return await AppConfig.findAll({ order: [['platform', 'ASC']] });
+    }
+
+    async updateOrCreateConfig(data) {
+        const [config] = await AppConfig.upsert(data, { returning: true });
+        return config;
+    }
+
     async checkUpdate(platform, currentVersion) {
         const config = await AppConfig.findOne({
             where: { platform },

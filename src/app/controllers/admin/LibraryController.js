@@ -1,6 +1,5 @@
-const LibraryService = require('../../../services/LibraryService');
+const LibraryResource = require('../../resources/LibraryResource');
 const catchAsync = require('../../../utils/catchAsync');
-const AppError = require('../../../utils/AppError');
 
 class LibraryController {
     constructor(libraryService) {
@@ -8,13 +7,10 @@ class LibraryController {
     }
 
     create = catchAsync(async (req, res) => {
-        if (!req.files || !req.files['book_file']) {
-            throw new AppError('Kitob fayli (PDF) yuklanishi shart!', 400);
-        }
         const library = await this.libraryService.create(req.body, req.files);
         res.status(201).json({
             success: true,
-            data: library
+            data: LibraryResource.format(library)
         });
     });
 
@@ -27,4 +23,4 @@ class LibraryController {
     });
 }
 
-module.exports = new LibraryController(LibraryService);
+module.exports = LibraryController;

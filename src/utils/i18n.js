@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 
 const locales = {};
-const localesPath = path.join(__dirname, '../../locales');
+const localesPath = path.join(process.cwd(), 'locales');
 
 try {
     const files = fs.readdirSync(localesPath);
@@ -13,7 +13,7 @@ try {
         }
     });
 } catch (err) {
-    console.error('Lokalizatsiya fayllarini yuklashda xatolik:', err);
+    console.error('Localization loading error:', err);
 }
 
 exports.t = (key, lang = 'uz') => {

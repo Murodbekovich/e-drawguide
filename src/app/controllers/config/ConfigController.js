@@ -1,6 +1,4 @@
-const AppConfigService = require('../../../services/AppConfigService');
 const catchAsync = require('../../../utils/catchAsync');
-const AppError = require('../../../utils/AppError');
 
 class ConfigController {
     constructor(appConfigService) {
@@ -9,18 +7,22 @@ class ConfigController {
 
     checkVersion = catchAsync(async (req, res) => {
         const { platform, version } = req.query;
-
-        if (!platform || !version) {
-            throw new AppError("Platform va Version yuborilishi shart!", 400);
-        }
-
         const result = await this.appConfigService.checkUpdate(platform, version);
-
         res.status(200).json({
             success: true,
             data: result
         });
     });
+
+    index = catchAsync(async (req, res) => {
+        const configs = await this.appConfigService.getAllConfigs();
+        res.status(200).json({ success: true, data: configs });
+    });
+
+    upsert = catchAsync(async (req, res) => {
+        const config = await this.appConfigService.updateOrCreateConfig(req.body);
+        res.status(200).json({ success: true, data: config });
+    });
 }
 
-module.exports = new ConfigController(AppConfigService);
+module.exports = ConfigController;

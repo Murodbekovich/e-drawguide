@@ -1,10 +1,13 @@
-const QuizService = require('../../services/QuizService');
 const QuizResource = require('../resources/QuizResource');
 const catchAsync = require('../../utils/catchAsync');
 
 class QuizController {
+    constructor(quizService) {
+        this.quizService = quizService;
+    }
+
     index = catchAsync(async (req, res) => {
-        const quizzes = await QuizService.getAllQuizzes(req.user.role);
+        const quizzes = await this.quizService.getAllQuizzes(req.user.role);
         res.status(200).json({
             success: true,
             data: QuizResource.format(quizzes, req.user.role)
@@ -12,7 +15,7 @@ class QuizController {
     });
 
     show = catchAsync(async (req, res) => {
-        const quiz = await QuizService.getQuizById(req.params.id, req.user.role);
+        const quiz = await this.quizService.getQuizById(req.params.id, req.user.role);
         res.status(200).json({
             success: true,
             data: QuizResource.format(quiz, req.user.role)
@@ -20,7 +23,7 @@ class QuizController {
     });
 
     create = catchAsync(async (req, res) => {
-        const quiz = await QuizService.createQuiz(req.body);
+        const quiz = await this.quizService.createQuiz(req.body);
         res.status(201).json({
             success: true,
             data: quiz
@@ -28,7 +31,7 @@ class QuizController {
     });
 
     addQuestion = catchAsync(async (req, res) => {
-        const question = await QuizService.addQuestion(req.params.id, req.body);
+        const question = await this.quizService.addQuestion(req.params.id, req.body);
         res.status(201).json({
             success: true,
             data: question
@@ -36,7 +39,7 @@ class QuizController {
     });
 
     submit = catchAsync(async (req, res) => {
-        const result = await QuizService.submitQuiz(req.user.id, req.params.id, req.body.answers);
+        const result = await this.quizService.submitQuiz(req.user.id, req.params.id, req.body.answers);
         res.status(200).json({
             success: true,
             data: result
@@ -44,4 +47,4 @@ class QuizController {
     });
 }
 
-module.exports = new QuizController();
+module.exports = QuizController;

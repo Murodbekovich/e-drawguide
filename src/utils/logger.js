@@ -1,5 +1,6 @@
 const winston = require('winston');
 require('winston-daily-rotate-file');
+const Sentry = require('@sentry/node');
 
 const logFormat = winston.format.combine(
     winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
@@ -22,17 +23,12 @@ const logger = winston.createLogger({
             filename: 'logs/combined-%DATE%.log',
             datePattern: 'YYYY-MM-DD',
             maxFiles: '14d'
-        }),
-        new winston.transports.DailyRotateFile({
-            filename: 'logs/access-%DATE%.log',
-            datePattern: 'YYYY-MM-DD',
-            maxFiles: '14d'
-        }),
+        })
     ],
 });
 
 logger.stream = {
-    write: (message) => logger.info(message.trim(), { type: 'access_log' })
+    write: (message) => logger.info(message.trim())
 };
 
 if (process.env.NODE_ENV !== 'production') {
@@ -43,5 +39,13 @@ if (process.env.NODE_ENV !== 'production') {
         ),
     }));
 }
+
+const originalError = logger.error;
+logger.error = function (message, err) {
+    if (process.env.SENTRY_DSN && err instanceof Error) {
+        Sentry.captureException(err);
+    }
+    return originalError.apply(this, arguments);
+};
 
 module.exports = logger;

@@ -1,4 +1,4 @@
-const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+const PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
 const ROLES = {
     ADMIN: 'admin',
@@ -8,7 +8,7 @@ const ROLES = {
 const LANGUAGES = ['uz', 'ru', 'en'];
 
 module.exports = {
-    passwordRegex,
+    PASSWORD_REGEX,
     ROLES,
     LANGUAGES
 };

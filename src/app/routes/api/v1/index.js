@@ -13,8 +13,7 @@ router.use('/config', configRoutes);
 
 router.get('/health', async (req, res) => {
     const health = await checkSystemHealth();
-    const statusCode = health.status === 'healthy' ? 200 : 503;
-    res.status(statusCode).json(health);
+    res.status(health.status === 'healthy' ? 200 : 503).json(health);
 });
 
 module.exports = router;

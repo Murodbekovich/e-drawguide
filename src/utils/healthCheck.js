@@ -1,12 +1,19 @@
 const { sequelize } = require('../database');
 const { redis } = require('./cache');
+const os = require('os');
 
 exports.checkSystemHealth = async () => {
     const health = {
         status: 'healthy',
-        uptime: process.uptime(),
         timestamp: new Date().toISOString(),
-        checks: {
+        system: {
+            uptime: process.uptime(),
+            cpuUsage: process.cpuUsage(),
+            memoryUsage: process.memoryUsage(),
+            freeMem: os.freemem(),
+            totalMem: os.totalmem()
+        },
+        services: {
             database: 'unknown',
             redis: 'unknown'
         }
@@ -14,21 +21,23 @@ exports.checkSystemHealth = async () => {
 
     try {
         await sequelize.authenticate();
-        health.checks.database = 'connected';
+        health.services.database = 'connected';
     } catch (err) {
-        health.checks.database = 'disconnected';
+        health.services.database = 'disconnected';
         health.status = 'unhealthy';
     }
 
     try {
         if (redis.status === 'ready') {
-            health.checks.redis = 'connected';
+            const start = Date.now();
+            await redis.ping();
+            health.services.redis = `connected (${Date.now() - start}ms)`;
         } else {
-            health.checks.redis = 'disconnected';
+            health.services.redis = 'disconnected';
             health.status = 'unhealthy';
         }
     } catch (err) {
-        health.checks.redis = 'disconnected';
+        health.services.redis = 'error';
         health.status = 'unhealthy';
     }
 

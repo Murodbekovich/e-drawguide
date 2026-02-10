@@ -30,4 +30,4 @@ class UserController {
     });
 }
 
-module.exports = new UserController(UserService);
+module.exports = UserController;

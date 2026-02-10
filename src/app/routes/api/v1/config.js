@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const ConfigController = require('../../../controllers/config/ConfigController');
+const { configController } = require('../../../../infrastructure/container');
 
-router.get('/check-version', ConfigController.checkVersion);
+router.get('/check-version', configController.checkVersion);
 
 module.exports = router;
