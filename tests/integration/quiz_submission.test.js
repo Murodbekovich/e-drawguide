@@ -1,16 +1,21 @@
 const request = require('supertest');
 const app = require('../../src/app');
 const { Quiz, Question, User, sequelize } = require('../../src/database');
+const bcrypt = require('bcrypt');
+const { redis } = require('../../src/utils/cache');
 
 describe('Quiz Submission Integration', () => {
     let token, quizId, questionId;
 
     beforeAll(async () => {
         await sequelize.sync({ force: true });
+
+        const hashedPassword = await bcrypt.hash('HashedPassword123!', 12);
+
         const user = await User.create({
             full_name: 'Test Student',
             phone: '998901234567',
-            password: 'HashedPassword123!',
+            password: hashedPassword,
             role: 'student'
         });
 
@@ -47,5 +52,6 @@ describe('Quiz Submission Integration', () => {
 
     afterAll(async () => {
         await sequelize.close();
+        await redis.quit();
     });
 });

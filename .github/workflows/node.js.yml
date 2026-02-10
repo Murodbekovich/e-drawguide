@@ -9,35 +9,56 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+
     services:
       postgres:
         image: postgres:15-alpine
         env:
           POSTGRES_DB: e_drawguide_db
+          POSTGRES_USER: postgres
           POSTGRES_PASSWORD: 12buny34
         ports:
           - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
       redis:
         image: redis:alpine
         ports:
           - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     steps:
       - uses: actions/checkout@v4
+
       - name: Use Node.js 18
         uses: actions/setup-node@v4
         with:
           node-version: 18
           cache: 'npm'
-      - run: npm ci
+
+      - name: Install dependencies
+        run: npm ci
+
       - name: Run Tests
         env:
           NODE_ENV: test
           DB_HOST: localhost
+          DB_PORT: 5432
           DB_NAME: e_drawguide_db
           DB_USER: postgres
           DB_PASS: 12buny34
-          JWT_SECRET: sdkvbiufvdfyg#$&%^#&*cdbyusud3874568374
-          JWT_REFRESH_SECRET: dovhu9e756t357ry8jdmew8u&$^#
+          REDIS_HOST: localhost
+          REDIS_PORT: 6379
+          JWT_SECRET: sdkvbiuf^#&*cdbyusud3874568374
+          JWT_REFRESH_SECRET: d56t357ry8jdmew8u&$^#
           BASE_URL: http://localhost:4001
         run: npm test
 
@@ -45,5 +66,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      - name: Use Node.js 18
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: npm ci
+
       - name: Audit Dependencies
         run: npm audit --audit-level=high
