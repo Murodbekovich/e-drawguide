@@ -8,5 +8,10 @@ module.exports = (sequelize, DataTypes) => {
         is_force_update: { type: DataTypes.BOOLEAN, defaultValue: false },
         message_uz: { type: DataTypes.STRING },
         message_ru: { type: DataTypes.STRING }
-    }, { timestamps: true, underscored: true, tableName: 'app_configs' });
+    }, {
+        timestamps: true,
+        underscored: true,
+        tableName: 'app_configs',
+        paranoid: false
+    });
 };

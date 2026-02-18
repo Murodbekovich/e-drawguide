@@ -8,10 +8,6 @@ const options = {
             title: 'E-DrawGuide - LMS API Dokumentatsiyasi',
             version: '1.0.0',
             description: 'Talabalar platformasi uchun barcha REST APIlar.',
-            contact: {
-                name: 'Backend Support',
-                url: 'https://e-drawguide.uz'
-            }
         },
         servers: [
             {
