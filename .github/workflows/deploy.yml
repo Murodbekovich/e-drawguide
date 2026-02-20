@@ -1,0 +1,27 @@
+name: E-DrawGuide Auto Deploy
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: SSH orqali ulanish va yangilash
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd ~/e-drawguide
+            git stash
+            git pull origin main
+            git stash pop || true
+            
+            docker-compose up --build -d app
+            
+            docker-compose exec -T app npm run db:setup
+            
+            docker system prune -f
