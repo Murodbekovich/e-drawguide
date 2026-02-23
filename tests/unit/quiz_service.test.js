@@ -13,13 +13,16 @@ jest.mock('../../src/utils/cache', () => ({
 }));
 
 describe('QuizService Unit Tests', () => {
+    beforeEach(() => {
+        jest.clearAllMocks();
+    });
+
     test('submitQuiz should calculate score and percentage correctly', async () => {
         const mockQuestions = [
             { id: 'q1', correct_answer: 'A' },
             { id: 'q2', correct_answer: 'B' }
         ];
 
-        // Yangi mantiq uchun Quiz-ni mock qilamiz
         Quiz.findByPk.mockResolvedValue({ id: 'quiz1', is_active: true });
 
         require('../../src/utils/cache').CacheManager.get.mockResolvedValue({
@@ -34,7 +37,7 @@ describe('QuizService Unit Tests', () => {
             { question_id: 'q2', selected_option: 'C' }
         ];
 
-        const result = await QuizService.submitQuiz('u1', 'quiz1', userAnswers);
+        const result = await QuizService.submitQuiz('u1', 'quiz1', userAnswers, 'uz');
 
         expect(result.correct).toBe(1);
         expect(result.total).toBe(2);
