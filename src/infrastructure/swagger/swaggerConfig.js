@@ -7,7 +7,6 @@ const options = {
         info: {
             title: 'E-DrawGuide - LMS API Dokumentatsiyasi',
             version: '1.0.0',
-            description: 'Talabalar platformasi uchun barcha REST APIlar.',
         },
         servers: [
             {
