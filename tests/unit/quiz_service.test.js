@@ -19,6 +19,8 @@ describe('QuizService Unit Tests', () => {
             { id: 'q2', correct_answer: 'B' }
         ];
 
+        Quiz.findByPk.mockResolvedValue({ id: 'quiz1', is_active: true });
+
         require('../../src/utils/cache').CacheManager.get.mockResolvedValue({
             'q1': 'A',
             'q2': 'B'
