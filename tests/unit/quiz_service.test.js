@@ -1,4 +1,3 @@
-const QuizService = require('../../src/services/QuizService');
 const { Question, Result, Quiz } = require('../../src/database');
 
 jest.mock('../../src/database', () => ({
@@ -11,6 +10,8 @@ jest.mock('../../src/database', () => ({
 jest.mock('../../src/utils/cache', () => ({
     CacheManager: { get: jest.fn(), set: jest.fn(), invalidate: jest.fn() }
 }));
+
+const QuizService = require('../../src/services/QuizService');
 
 describe('QuizService Unit Tests', () => {
     beforeEach(() => {
