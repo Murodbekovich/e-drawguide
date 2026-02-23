@@ -44,9 +44,10 @@ class LibraryService {
 
         const extractLocalPath = (url) => {
             if (!url) return null;
-            if (url.startsWith('http')) {
-                const parts = url.split('/uploads/');
-                return parts.length > 1 ? `uploads/${parts[1]}` : null;
+            const searchStr = '/uploads/';
+            const index = url.indexOf(searchStr);
+            if (index !== -1) {
+                return url.substring(index + 1);
             }
             return url.startsWith('/') ? url.substring(1) : url;
         };
