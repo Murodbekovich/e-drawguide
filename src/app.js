@@ -52,7 +52,8 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpecs, {
     customSiteTitle: "E-DrawGuide API Documentation"
 }));
 
-app.use(express.json({ limit: '1mb' }));
+app.use(express.json({ limit: '100mb' }));
+app.use(express.urlencoded({ limit: '100mb', extended: true }));
 app.use(setLang);
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 app.use('/api/v1', routes);
