@@ -1,10 +1,4 @@
 class QuestionResource {
-    /**
-     * Savol ma'lumotlarini formatlaydi, rollga qarab correct_answer'ni yashiradi.
-     * @param {Object} question - Question modeli
-     * @param {string} userRole - Javobni olayotgan foydalanuvchi roli ('student' yoki 'admin')
-     * @returns {Object} Formatlangan ma'lumot
-     */
     static format(question, userRole = 'student') {
         if (!question) return null;
 

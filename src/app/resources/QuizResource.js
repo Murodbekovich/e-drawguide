@@ -1,12 +1,6 @@
 const QuestionResource = require('./QuestionResource');
 
 class QuizResource {
-    /**
-     * Umumiy Quiz ma'lumotlarini formatlaydi.
-     * @param {Object|Array} quiz - Quiz modeli/modellari
-     * @param {string} userRole - Javobni olayotgan foydalanuvchi roli ('student' yoki 'admin')
-     * @returns {Object|Array} Formatlangan ma'lumot
-     */
     static format(quiz, userRole = 'student') {
         if (Array.isArray(quiz)) {
             return quiz.map(q => this.formatSingle(q, userRole));
