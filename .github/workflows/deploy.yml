@@ -16,12 +16,12 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             cd ~/e-drawguide
-            git stash
-            git pull origin main
-            git stash pop || true
-            
+            git fetch --all
+            git reset --hard origin/main
+            sudo chmod -R 777 logs uploads || true
+            docker-compose stop app || true
+            docker-compose rm -f app || true
             docker-compose up --build -d app
-            
-            docker-compose exec -T app npm run db:setup
-            
+            sleep 5
+            docker-compose exec -T app npm run db:migrate
             docker system prune -f
