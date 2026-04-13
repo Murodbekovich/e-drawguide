@@ -1,65 +1,17 @@
 paths:
   /mobile/library:
     get:
-      tags: [MOBILE APP]
-      summary: Kutubxonadagi kitoblar ro'yxati
-      security:
-        - bearerAuth: []
-      parameters:
-        - name: lang
-          in: query
-          schema: { type: string, enum: [uz, ru, en] }
-        - name: search
-          in: query
-          schema: { type: string }
-      responses:
-        200:
-          description: OK
-
+      tags: [MOBILE]
+      summary: Kitoblar ro'yxati
   /mobile/videos:
     get:
-      tags: [MOBILE APP]
-      summary: Video darslar ro'yxati
-      security:
-        - bearerAuth: []
-      responses:
-        200:
-          description: OK
-
+      tags: [MOBILE]
+      summary: Videolar ro'yxati
   /mobile/quizzes:
     get:
-      tags: [MOBILE APP]
-      summary: Mavjud testlar ro'yxati
-      security:
-        - bearerAuth: []
-      responses:
-        200:
-          description: OK
-
+      tags: [MOBILE]
+      summary: Testlar ro'yxati
   /mobile/quizzes/{id}/submit:
     post:
-      tags: [MOBILE APP]
-      summary: Test natijasini topshirish
-      security:
-        - bearerAuth: []
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema: { type: string, format: uuid }
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                answers:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      question_id: { type: string, format: uuid }
-                      selected_option: { type: string }
-      responses:
-        200:
-          description: OK
+      tags: [MOBILE]
+      summary: Test topshirish

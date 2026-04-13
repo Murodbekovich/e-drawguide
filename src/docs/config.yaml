@@ -1,24 +1,9 @@
 paths:
   /config/check-version:
     get:
-      tags: [Config]
-      summary: Ilova versiyasini tekshirish
-      parameters:
-        - name: platform
-          in: query
-          required: true
-          schema: { type: string, enum: [android, ios] }
-        - name: version
-          in: query
-          required: true
-          schema: { type: string }
-      responses:
-        200:
-          description: OK
+      tags: [MOBILE]
+      summary: Versiyani tekshirish
   /health:
     get:
-      tags: [System]
-      summary: Sistema holatini tekshirish
-      responses:
-        200:
-          description: OK
+      tags: [MOBILE]
+      summary: Health check

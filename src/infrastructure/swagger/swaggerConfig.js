@@ -7,27 +7,12 @@ const options = {
         info: {
             title: 'E-DrawGuide - LMS API Panel',
             version: '1.0.0',
-            description: 'API xaritasi: ADMIN (Web Panel) va MOBILE (Talabalar ilovasi) uchun.'
+            description: 'Barcha APIlar ADMIN va MOBILE bo\'limlariga guruhlangan.'
         },
-        servers: [
-            {
-                url: '/api/v1',
-                description: 'Asosiy V1 API Server'
-            }
-        ],
+        servers: [{ url: '/api/v1' }],
         tags: [
-            {
-                name: 'ADMIN PANEL',
-                description: 'Faqat Web Dashboard orqali boshqariladigan APIlar'
-            },
-            {
-                name: 'MOBILE APP',
-                description: 'Mobil ilova (Talabalar) uchun xizmat qiluvchi APIlar'
-            },
-            {
-                name: 'AUTH',
-                description: 'Tizimga kirish va profil boshqaruvi'
-            }
+            { name: 'ADMIN', description: 'Admin panel uchun barcha APIlar' },
+            { name: 'MOBILE', description: 'Mobil ilova uchun barcha APIlar' }
         ],
         components: {
             securitySchemes: {
@@ -38,14 +23,9 @@ const options = {
                 }
             }
         },
-        security: [{
-            bearerAuth: []
-        }]
+        security: [{ bearerAuth: [] }]
     },
-    apis: [
-        path.join(__dirname, '../../docs/*.yaml')
-    ]
+    apis: [path.join(__dirname, '../../docs/*.yaml')]
 };
 
-const swaggerSpecs = swaggerJsdoc(options);
-module.exports = swaggerSpecs;
+module.exports = swaggerJsdoc(options);

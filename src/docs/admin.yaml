@@ -1,81 +1,21 @@
 paths:
   /admin/library:
     post:
-      tags: [ADMIN PANEL]
-      summary: Yangi kitob yuklash
-      security:
-        - bearerAuth: []
-      requestBody:
-        content:
-          multipart/form-data:
-            schema:
-              type: object
-              required: [title, author, language, book_file]
-              properties:
-                title: { type: string }
-                author: { type: string }
-                language: { type: string, enum: [uz, ru, en] }
-                book_file: { type: string, format: binary }
-                cover_file: { type: string, format: binary }
-      responses:
-        201:
-          description: OK
-
+      tags: [ADMIN]
+      summary: Kitob yuklash
   /admin/videos:
     post:
-      tags: [ADMIN PANEL]
-      summary: Yangi video dars qo'shish
-      security:
-        - bearerAuth: []
-      requestBody:
-        content:
-          multipart/form-data:
-            schema:
-              type: object
-              required: [title, video_url]
-              properties:
-                title: { type: string }
-                description: { type: string }
-                video_url: { type: string }
-                thumbnail_file: { type: string, format: binary }
-      responses:
-        201:
-          description: OK
-
+      tags: [ADMIN]
+      summary: Video yuklash
   /admin/quizzes:
     post:
-      tags: [ADMIN PANEL]
-      summary: Yangi test to'plami yaratish
-      security:
-        - bearerAuth: []
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required: [title]
-              properties:
-                title: { type: string }
-      responses:
-        201:
-          description: OK
-
+      tags: [ADMIN]
+      summary: Test yaratish
   /admin/users:
     get:
-      tags: [ADMIN PANEL]
-      summary: Barcha talabalar ro'yxati
-      security:
-        - bearerAuth: []
-      responses:
-        200:
-          description: OK
-
+      tags: [ADMIN]
+      summary: Talabalar ro'yxati
   /admin/results:
     get:
-      tags: [ADMIN PANEL]
-      summary: Barcha test natijalari
-      security:
-        - bearerAuth: []
-      responses:
-        200:
-          description: OK
+      tags: [ADMIN]
+      summary: Natijalar hisoboti

@@ -1,35 +1,13 @@
 paths:
   /auth/register:
     post:
-      tags: [AUTH]
+      tags: [MOBILE]
       summary: Ro'yxatdan o'tish
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required: [fullName, phone, password]
-              properties:
-                fullName: { type: string }
-                phone: { type: string }
-                password: { type: string }
-      responses:
-        201:
-          description: OK
-
   /auth/login:
     post:
-      tags: [AUTH]
-      summary: Tizimga kirish
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required: [phone, password]
-              properties:
-                phone: { type: string }
-                password: { type: string }
-      responses:
-        200:
-          description: OK
+      tags: [MOBILE]
+      summary: Login
+  /auth/profile:
+    get:
+      tags: [MOBILE]
+      summary: Profil
