@@ -17,7 +17,7 @@ describe('Quiz Submission Integration', () => {
             role: 'student'
         });
 
-        const res = await request(app).post('/api/v1/auth/login').send({
+        const res = await request(app).post('/api/v1/mobile/auth/login').send({
             phone: '998901234567',
             password: 'Password123!'
         });

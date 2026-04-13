@@ -5,13 +5,13 @@ const { redis } = require('../../src/utils/cache');
 
 describe('Auth Integration Tests', () => {
     beforeAll(async () => {
-        await sequelize.sync({ force: false });
+        await sequelize.sync({ force: true });
         await User.destroy({ where: { phone: '998911234567' } });
     });
 
     test('Yangi foydalanuvchi ro\'yxatdan o\'tishi kerak', async () => {
         const res = await request(app)
-            .post('/api/v1/auth/register')
+            .post('/api/v1/mobile/auth/register')
             .send({
                 fullName: 'Test User',
                 phone: '998911234567',

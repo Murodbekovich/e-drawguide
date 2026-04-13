@@ -1,6 +1,6 @@
 const request = require('supertest');
 const app = require('../../src/app');
-const { User, Video, sequelize } = require('../../src/database');
+const { User, sequelize } = require('../../src/database');
 const { redis } = require('../../src/utils/cache');
 const bcrypt = require('bcrypt');
 
@@ -9,7 +9,6 @@ describe('Video Integration Tests', () => {
 
     beforeAll(async () => {
         await sequelize.sync({ force: true });
-
         const hashedPassword = await bcrypt.hash('Admin@12345', 12);
         await User.create({
             full_name: 'Super Admin',
@@ -19,7 +18,7 @@ describe('Video Integration Tests', () => {
             role: 'admin'
         });
 
-        const res = await request(app).post('/api/v1/auth/admin/login').send({
+        const res = await request(app).post('/api/v1/mobile/auth/admin/login').send({
             login: 'super_admin',
             password: 'Admin@12345'
         });
