@@ -5,14 +5,13 @@ const options = {
     definition: {
         openapi: '3.0.0',
         info: {
-            title: 'E-DrawGuide - LMS API Panel',
-            version: '1.0.0',
-            description: 'Barcha APIlar ADMIN va MOBILE bo\'limlariga guruhlangan.'
+            title: 'E-DrawGuide - LMS Professional API',
+            version: '1.0.0'
         },
         servers: [{ url: '/api/v1' }],
         tags: [
-            { name: 'ADMIN', description: 'Admin panel uchun barcha APIlar' },
-            { name: 'MOBILE', description: 'Mobil ilova uchun barcha APIlar' }
+            { name: 'ADMIN' },
+            { name: 'MOBILE' }
         ],
         components: {
             securitySchemes: {

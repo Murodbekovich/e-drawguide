@@ -9,7 +9,7 @@ const xss = require('xss-clean');
 const Sentry = require('@sentry/node');
 const swaggerUi = require('swagger-ui-express');
 const swaggerJSDoc = require('swagger-jsdoc');
-
+const swaggerSpecs = require('./infrastructure/swagger/swaggerConfig');
 const routes = require('./app/routes/api/v1/index');
 const errorHandler = require('./app/middlewares/errorHandler');
 const logger = require('./utils/logger');
@@ -34,6 +34,12 @@ app.use(compression());
 app.use(morgan('combined', { stream: logger.stream }));
 app.use(cors({ origin: '*', credentials: true }));
 
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpecs, {
+    swaggerOptions: {
+        docExpansion: 'list',
+        tryItOutEnabled: true
+    }
+}));
 app.use('/api/', apiLimiter);
 app.use('/api/v1/auth/login', authLimiter);
 app.use('/api/v1/auth/register', authLimiter);
