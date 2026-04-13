@@ -18,6 +18,8 @@ const setLang = require('./app/middlewares/setLang');
 
 const app = express();
 
+app.set('trust proxy', 1);
+
 if (process.env.SENTRY_DSN) {
     Sentry.init({ dsn: process.env.SENTRY_DSN });
     app.use(Sentry.Handlers.requestHandler());
@@ -51,8 +53,8 @@ const swaggerDefinition = {
     },
     servers: [{ url: '/api/v1' }],
     tags: [
-        { name: 'ADMIN', description: 'Admin panel APIlari' },
-        { name: 'MOBILE', description: 'Mobil ilova APIlari' }
+        { name: 'ADMIN' },
+        { name: 'MOBILE' }
     ],
     components: {
         securitySchemes: {
@@ -65,10 +67,9 @@ const swaggerDefinition = {
     },
     security: [{ bearerAuth: [] }]
 };
-
 const swaggerOptions = {
     swaggerDefinition,
-    apis: [path.join(__dirname, './docs/*.yaml')],
+    apis: [path.join(__dirname, '../docs/*.yaml')],
 };
 
 const swaggerDocs = swaggerJSDoc(swaggerOptions);
