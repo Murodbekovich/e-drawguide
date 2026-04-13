@@ -9,7 +9,7 @@ const xss = require('xss-clean');
 const Sentry = require('@sentry/node');
 const swaggerUi = require('swagger-ui-express');
 const swaggerJSDoc = require('swagger-jsdoc');
-const swaggerSpecs = require('./infrastructure/swagger/swaggerConfig');
+
 const routes = require('./app/routes/api/v1/index');
 const errorHandler = require('./app/middlewares/errorHandler');
 const logger = require('./utils/logger');
@@ -23,6 +23,11 @@ if (process.env.SENTRY_DSN) {
     app.use(Sentry.Handlers.requestHandler());
 }
 
+app.use('/api-docs', (req, res, next) => {
+    res.setHeader("Content-Security-Policy", "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdnjs.cloudflare.com; style-src 'self' 'https:' 'unsafe-inline'; img-src 'self' data: https:;");
+    next();
+});
+
 app.use(helmet({
     contentSecurityPolicy: false,
     crossOriginResourcePolicy: false
@@ -34,12 +39,6 @@ app.use(compression());
 app.use(morgan('combined', { stream: logger.stream }));
 app.use(cors({ origin: '*', credentials: true }));
 
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpecs, {
-    swaggerOptions: {
-        docExpansion: 'list',
-        tryItOutEnabled: true
-    }
-}));
 app.use('/api/', apiLimiter);
 app.use('/api/v1/auth/login', authLimiter);
 app.use('/api/v1/auth/register', authLimiter);
@@ -52,8 +51,8 @@ const swaggerDefinition = {
     },
     servers: [{ url: '/api/v1' }],
     tags: [
-        { name: 'ADMIN' },
-        { name: 'MOBILE' }
+        { name: 'ADMIN', description: 'Admin panel APIlari' },
+        { name: 'MOBILE', description: 'Mobil ilova APIlari' }
     ],
     components: {
         securitySchemes: {
