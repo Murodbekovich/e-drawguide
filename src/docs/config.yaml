@@ -3,13 +3,12 @@ paths:
     get:
       tags: [MOBILE]
       summary: Versiyani tekshirish
+      parameters:
+        - name: platform
+          in: query
+          schema: { type: string, enum: [android, ios] }
+        - name: version
+          in: query
+          schema: { type: string }
       responses:
-        200:
-          description: OK
-  /mobile/health:
-    get:
-      tags: [MOBILE]
-      summary: Health check
-      responses:
-        200:
-          description: OK
+        200: { description: OK }

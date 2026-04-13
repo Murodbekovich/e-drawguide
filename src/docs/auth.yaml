@@ -3,41 +3,45 @@ paths:
     post:
       tags: [MOBILE]
       summary: Ro'yxatdan o'tish
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [fullName, phone, password]
+              properties:
+                fullName: { type: string }
+                phone: { type: string }
+                password: { type: string }
       responses:
         201: { description: OK }
   /mobile/auth/login:
     post:
       tags: [MOBILE]
       summary: Login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [phone, password]
+              properties:
+                phone: { type: string }
+                password: { type: string }
       responses:
         200: { description: OK }
-  /mobile/auth/logout:
+  /admin/auth/login:
     post:
-      tags: [MOBILE]
-      summary: Logout
-      security:
-        - bearerAuth: []
-      responses:
-        200: { description: OK }
-  /mobile/auth/profile:
-    get:
-      tags: [MOBILE]
-      summary: Profil
-      security:
-        - bearerAuth: []
-      responses:
-        200: { description: OK }
-  /mobile/auth/my-results:
-    get:
-      tags: [MOBILE]
-      summary: Natijalar tarixi
-      security:
-        - bearerAuth: []
-      responses:
-        200: { description: OK }
-  /mobile/auth/refresh:
-    post:
-      tags: [MOBILE]
-      summary: Token yangilash
+      tags: [ADMIN]
+      summary: Admin login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [login, password]
+              properties:
+                login: { type: string }
+                password: { type: string }
       responses:
         200: { description: OK }

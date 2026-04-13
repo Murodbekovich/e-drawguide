@@ -1,66 +1,16 @@
 paths:
-  /mobile/auth/register:
-    post:
-      tags: [MOBILE]
-      summary: Ro'yxatdan o'tish
-      responses:
-        201: { description: OK }
-  /mobile/auth/login:
-    post:
-      tags: [MOBILE]
-      summary: Login
-      responses:
-        200: { description: OK }
-  /mobile/auth/logout:
-    post:
-      tags: [MOBILE]
-      summary: Logout
-      responses:
-        200: { description: OK }
-  /mobile/auth/profile:
-    get:
-      tags: [MOBILE]
-      summary: Profil
-      responses:
-        200: { description: OK }
-  /mobile/auth/my-results:
-    get:
-      tags: [MOBILE]
-      summary: Natijalar tarixi
-      responses:
-        200: { description: OK }
-  /mobile/auth/refresh:
-    post:
-      tags: [MOBILE]
-      summary: Token yangilash
-      responses:
-        200: { description: OK }
   /mobile/library:
     get:
       tags: [MOBILE]
       summary: Kitoblar ro'yxati
-      responses:
-        200: { description: OK }
-  /mobile/videos:
-    get:
-      tags: [MOBILE]
-      summary: Videolar ro'yxati
-      responses:
-        200: { description: OK }
-  /mobile/quizzes:
-    get:
-      tags: [MOBILE]
-      summary: Testlar ro'yxati
-      responses:
-        200: { description: OK }
-  /mobile/quizzes/{id}:
-    get:
-      tags: [MOBILE]
-      summary: Testni boshlash
+      security:
+        - bearerAuth: []
       parameters:
-        - name: id
-          in: path
-          required: true
+        - name: lang
+          in: query
+          schema: { type: string, enum: [uz, ru, en] }
+        - name: search
+          in: query
           schema: { type: string }
       responses:
         200: { description: OK }
@@ -68,22 +18,26 @@ paths:
     post:
       tags: [MOBILE]
       summary: Test topshirish
+      security:
+        - bearerAuth: []
       parameters:
         - name: id
           in: path
           required: true
-          schema: { type: string }
-      responses:
-        200: { description: OK }
-  /mobile/config/check-version:
-    get:
-      tags: [MOBILE]
-      summary: Versiyani tekshirish
-      responses:
-        200: { description: OK }
-  /mobile/health:
-    get:
-      tags: [MOBILE]
-      summary: Health check
+          schema: { type: string, format: uuid }
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [answers]
+              properties:
+                answers:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      question_id: { type: string, format: uuid }
+                      selected_option: { type: string }
       responses:
         200: { description: OK }
