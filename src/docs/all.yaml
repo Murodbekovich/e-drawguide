@@ -1,0 +1,162 @@
+paths:
+  /admin/library:
+    post:
+      tags: [ADMIN]
+      summary: Kitob yuklash
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required: [title, author, language, book_file]
+              properties:
+                title: { type: string }
+                author: { type: string }
+                language: { type: string, enum: [uz, ru, en] }
+                book_file: { type: string, format: binary }
+                cover_file: { type: string, format: binary }
+      responses:
+        201: { description: OK }
+  /admin/videos:
+    post:
+      tags: [ADMIN]
+      summary: Video yuklash
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required: [title, video_url]
+              properties:
+                title: { type: string }
+                description: { type: string }
+                video_url: { type: string }
+                thumbnail_file: { type: string, format: binary }
+      responses:
+        201: { description: OK }
+  /admin/quizzes:
+    get:
+      tags: [ADMIN]
+      summary: Testlar ro'yxati
+      security:
+        - bearerAuth: []
+      responses:
+        200: { description: OK }
+    post:
+      tags: [ADMIN]
+      summary: Yangi test yaratish
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [title]
+              properties:
+                title: { type: string }
+                is_active: { type: boolean }
+      responses:
+        201: { description: OK }
+  /admin/auth/login:
+    post:
+      tags: [ADMIN]
+      summary: Admin login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [login, password]
+              properties:
+                login: { type: string }
+                password: { type: string }
+      responses:
+        200: { description: OK }
+  /mobile/auth/register:
+    post:
+      tags: [MOBILE]
+      summary: Ro'yxatdan o'tish
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [fullName, phone, password]
+              properties:
+                fullName: { type: string }
+                phone: { type: string }
+                password: { type: string }
+      responses:
+        201: { description: OK }
+  /mobile/auth/login:
+    post:
+      tags: [MOBILE]
+      summary: Login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [phone, password]
+              properties:
+                phone: { type: string }
+                password: { type: string }
+      responses:
+        200: { description: OK }
+  /mobile/library:
+    get:
+      tags: [MOBILE]
+      summary: Kitoblar ro'yxati
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: lang
+          in: query
+          schema: { type: string }
+      responses:
+        200: { description: OK }
+  /mobile/videos:
+    get:
+      tags: [MOBILE]
+      summary: Videolar ro'yxati
+      security:
+        - bearerAuth: []
+      responses:
+        200: { description: OK }
+  /mobile/quizzes:
+    get:
+      tags: [MOBILE]
+      summary: Testlar ro'yxati
+      security:
+        - bearerAuth: []
+      responses:
+        200: { description: OK }
+  /mobile/quizzes/{id}/submit:
+    post:
+      tags: [MOBILE]
+      summary: Test topshirish
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [answers]
+              properties:
+                answers:
+                  type: array
+                  items:
+                    type: object
+      responses:
+        200: { description: OK }
