@@ -1,27 +1,18 @@
 components:
   schemas:
-    User:
+    VideoInput:
       type: object
+      required: [title, video_url]
       properties:
-        id: { type: string, format: uuid }
-        full_name: { type: string }
-    Video:
-      type: object
-      properties:
-        id: { type: string, format: uuid }
         title: { type: string }
-    Library:
+        description: { type: string }
+        video_url: { type: string }
+        thumbnail_file: { type: string, format: binary }
+    LibraryInput:
       type: object
+      required: [title, author, language, book_file]
       properties:
-        id: { type: string, format: uuid }
         title: { type: string }
-    Quiz:
-      type: object
-      properties:
-        id: { type: string, format: uuid }
-        title: { type: string }
-    Result:
-      type: object
-      properties:
-        result_id: { type: string, format: uuid }
-        score: { type: integer }
+        author: { type: string }
+        language: { type: string }
+        book_file: { type: string, format: binary }

@@ -5,38 +5,10 @@ paths:
       summary: Kitoblar ro'yxati
       security:
         - bearerAuth: []
-      responses:
-        200:
-          description: OK
-  /mobile/videos:
-    get:
-      tags: [MOBILE]
-      summary: Videolar ro'yxati
-      security:
-        - bearerAuth: []
-      responses:
-        200:
-          description: OK
-  /mobile/quizzes:
-    get:
-      tags: [MOBILE]
-      summary: Testlar ro'yxati
-      security:
-        - bearerAuth: []
-      responses:
-        200:
-          description: OK
-  /mobile/quizzes/{id}:
-    get:
-      tags: [MOBILE]
-      summary: Testni boshlash
-      security:
-        - bearerAuth: []
       parameters:
-        - name: id
-          in: path
-          required: true
-          schema: { type: string, format: uuid }
+        - name: lang
+          in: query
+          schema: { type: string, enum: [uz, ru, en] }
       responses:
         200:
           description: OK
@@ -51,6 +23,20 @@ paths:
           in: path
           required: true
           schema: { type: string, format: uuid }
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [answers]
+              properties:
+                answers:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      question_id: { type: string, format: uuid }
+                      selected_option: { type: string }
       responses:
         200:
           description: OK

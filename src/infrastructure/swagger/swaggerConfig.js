@@ -5,7 +5,7 @@ const options = {
     definition: {
         openapi: '3.0.0',
         info: {
-            title: 'E-DrawGuide - LMS Professional API',
+            title: 'E-DrawGuide - LMS API Panel',
             version: '1.0.0'
         },
         servers: [{ url: '/api/v1' }],
