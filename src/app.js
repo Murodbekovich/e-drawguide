@@ -68,7 +68,7 @@ const swaggerDefinition = {
 
 const swaggerOptions = {
     swaggerDefinition,
-    apis: [path.join(__dirname, '../docs/*.yaml')],
+    apis: [path.join(__dirname, './docs/*.yaml')],
 };
 
 const swaggerDocs = swaggerJSDoc(swaggerOptions);
