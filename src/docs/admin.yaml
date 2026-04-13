@@ -3,78 +3,78 @@ paths:
     post:
       tags: [ADMIN]
       summary: Kitob yuklash
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required: [title, author, language, book_file]
+              properties:
+                title: { type: string }
+                author: { type: string }
+                language: { type: string, enum: [uz, ru, en] }
+                book_file: { type: string, format: binary }
+                cover_file: { type: string, format: binary }
       responses:
         201: { description: OK }
-  /admin/library/{id}:
-    delete:
-      tags: [ADMIN]
-      summary: Kitobni o'chirish
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema: { type: string }
-      responses:
-        200: { description: OK }
   /admin/videos:
     post:
       tags: [ADMIN]
       summary: Video yuklash
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required: [title, video_url]
+              properties:
+                title: { type: string }
+                description: { type: string }
+                video_url: { type: string }
+                thumbnail_file: { type: string, format: binary }
       responses:
         201: { description: OK }
-  /admin/videos/{id}:
-    delete:
-      tags: [ADMIN]
-      summary: Videoni o'chirish
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema: { type: string }
-      responses:
-        200: { description: OK }
-  /admin/videos/{id}/restore:
-    patch:
-      tags: [ADMIN]
-      summary: Videoni tiklash
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema: { type: string }
-      responses:
-        200: { description: OK }
   /admin/quizzes:
-    get:
-      tags: [ADMIN]
-      summary: Testlar ro'yxati
-      responses:
-        200: { description: OK }
     post:
       tags: [ADMIN]
       summary: Yangi test yaratish
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [title]
+              properties:
+                title: { type: string }
+                is_active: { type: boolean }
       responses:
         201: { description: OK }
   /admin/quizzes/{id}/questions:
     post:
       tags: [ADMIN]
       summary: Savol qo'shish
+      security:
+        - bearerAuth: []
       parameters:
         - name: id
           in: path
           required: true
           schema: { type: string }
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [question_text, options, correct_answer]
+              properties:
+                question_text: { type: string }
+                options: { type: array, items: { type: object } }
+                correct_answer: { type: string }
       responses:
         201: { description: OK }
-  /admin/users:
-    get:
-      tags: [ADMIN]
-      summary: Talabalar ro'yxati
-      responses:
-        200: { description: OK }
-  /admin/results:
-    get:
-      tags: [ADMIN]
-      summary: Natijalar hisoboti
-      responses:
-        200: { description: OK }
