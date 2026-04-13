@@ -26,12 +26,31 @@ paths:
       responses:
         200:
           description: OK
+  /mobile/quizzes/{id}:
+    get:
+      tags: [MOBILE]
+      summary: Testni boshlash
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        200:
+          description: OK
   /mobile/quizzes/{id}/submit:
     post:
       tags: [MOBILE]
       summary: Test topshirish
       security:
         - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
       responses:
         200:
           description: OK

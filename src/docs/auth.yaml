@@ -13,3 +13,37 @@ paths:
       responses:
         200:
           description: OK
+  /mobile/auth/logout:
+    post:
+      tags: [MOBILE]
+      summary: Logout
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          description: OK
+  /mobile/auth/profile:
+    get:
+      tags: [MOBILE]
+      summary: Profil
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          description: OK
+  /mobile/auth/my-results:
+    get:
+      tags: [MOBILE]
+      summary: Natijalar tarixi
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          description: OK
+  /mobile/auth/refresh:
+    post:
+      tags: [MOBILE]
+      summary: Token yangilash
+      responses:
+        200:
+          description: OK
