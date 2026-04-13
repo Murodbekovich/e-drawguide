@@ -69,9 +69,11 @@ const swaggerDefinition = {
 };
 const swaggerOptions = {
     swaggerDefinition,
-    apis: [path.join(__dirname, '../docs/*.yaml')],
+    apis: [
+        path.join(__dirname, './docs/*.yaml'), // Agar docs src ichida bo'lsa
+        path.join(__dirname, '../docs/*.yaml')  // Agar docs src dan tashqarida bo'lsa
+    ],
 };
-
 const swaggerDocs = swaggerJSDoc(swaggerOptions);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs, {
     swaggerOptions: {
