@@ -9,8 +9,8 @@ describe('Quiz Submission Integration', () => {
 
     beforeAll(async () => {
         await sequelize.sync({ force: true });
-        const hashedPassword = await bcrypt.hash('HashedPassword123!', 12);
-        const user = await User.create({
+        const hashedPassword = await bcrypt.hash('Password123!', 12);
+        await User.create({
             full_name: 'Test Student',
             phone: '998901234567',
             password: hashedPassword,
@@ -19,7 +19,7 @@ describe('Quiz Submission Integration', () => {
 
         const res = await request(app).post('/api/v1/auth/login').send({
             phone: '998901234567',
-            password: 'HashedPassword123!'
+            password: 'Password123!'
         });
         token = res.body.access_token;
 
@@ -37,7 +37,7 @@ describe('Quiz Submission Integration', () => {
 
     test('Should calculate score correctly on submit', async () => {
         const res = await request(app)
-            .post(`/api/v1/student/quizzes/${quizId}/submit`)
+            .post(`/api/v1/mobile/quizzes/${quizId}/submit`)
             .set('Authorization', `Bearer ${token}`)
             .send({
                 answers: [{ question_id: questionId, selected_option: 'B' }]
