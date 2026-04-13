@@ -5,27 +5,33 @@ paths:
       summary: Kitoblar ro'yxati
       security:
         - bearerAuth: []
+      responses:
+        200:
+          description: OK
   /mobile/videos:
     get:
       tags: [MOBILE]
       summary: Videolar ro'yxati
       security:
         - bearerAuth: []
+      responses:
+        200:
+          description: OK
   /mobile/quizzes:
     get:
       tags: [MOBILE]
       summary: Testlar ro'yxati
       security:
         - bearerAuth: []
-  /mobile/quizzes/{id}:
-    get:
-      tags: [MOBILE]
-      summary: Testni boshlash
-      security:
-        - bearerAuth: []
+      responses:
+        200:
+          description: OK
   /mobile/quizzes/{id}/submit:
     post:
       tags: [MOBILE]
       summary: Test topshirish
       security:
         - bearerAuth: []
+      responses:
+        200:
+          description: OK

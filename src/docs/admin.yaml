@@ -5,68 +5,35 @@ paths:
       summary: Kitob yuklash
       security:
         - bearerAuth: []
-  /admin/library/{id}:
-    delete:
-      tags: [ADMIN]
-      summary: Kitobni o'chirish
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema: { type: string, format: uuid }
+      responses:
+        201:
+          description: OK
+        400:
+          description: Bad Request
   /admin/videos:
     post:
       tags: [ADMIN]
       summary: Video yuklash
       security:
         - bearerAuth: []
-  /admin/videos/{id}:
-    delete:
-      tags: [ADMIN]
-      summary: Videoni o'chirish
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema: { type: string, format: uuid }
-  /admin/videos/{id}/restore:
-    patch:
-      tags: [ADMIN]
-      summary: Videoni tiklash
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema: { type: string, format: uuid }
+      responses:
+        201:
+          description: OK
   /admin/quizzes:
-    get:
-      tags: [ADMIN]
-      summary: Testlar ro'yxati
-      security:
-        - bearerAuth: []
     post:
       tags: [ADMIN]
-      summary: Yangi test yaratish
+      summary: Test yaratish
       security:
         - bearerAuth: []
-  /admin/quizzes/{id}/questions:
-    post:
-      tags: [ADMIN]
-      summary: Savol qo'shish
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema: { type: string, format: uuid }
+      responses:
+        201:
+          description: OK
   /admin/users:
     get:
       tags: [ADMIN]
       summary: Talabalar ro'yxati
       security:
         - bearerAuth: []
-  /admin/results:
-    get:
-      tags: [ADMIN]
-      summary: Natijalar hisoboti
-      security:
-        - bearerAuth: []
+      responses:
+        200:
+          description: OK

@@ -3,29 +3,13 @@ paths:
     post:
       tags: [MOBILE]
       summary: Ro'yxatdan o'tish
+      responses:
+        201:
+          description: OK
   /mobile/auth/login:
     post:
       tags: [MOBILE]
       summary: Login
-  /mobile/auth/logout:
-    post:
-      tags: [MOBILE]
-      summary: Logout
-      security:
-        - bearerAuth: []
-  /mobile/auth/profile:
-    get:
-      tags: [MOBILE]
-      summary: Profil
-      security:
-        - bearerAuth: []
-  /mobile/auth/my-results:
-    get:
-      tags: [MOBILE]
-      summary: Natijalar tarixi
-      security:
-        - bearerAuth: []
-  /mobile/auth/refresh:
-    post:
-      tags: [MOBILE]
-      summary: Token yangilash
+      responses:
+        200:
+          description: OK
