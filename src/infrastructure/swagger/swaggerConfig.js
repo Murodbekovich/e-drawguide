@@ -5,7 +5,7 @@ const options = {
     definition: {
         openapi: '3.0.0',
         info: {
-            title: 'E-DrawGuide - LMS API Panel',
+            title: 'E-DrawGuide - LMS Professional API',
             version: '1.0.0'
         },
         servers: [{ url: '/api/v1' }],
@@ -27,4 +27,5 @@ const options = {
     apis: [path.join(__dirname, '../../docs/*.yaml')]
 };
 
-module.exports = swaggerJsdoc(options);
+const swaggerSpecs = swaggerJsdoc(options);
+module.exports = swaggerSpecs;
