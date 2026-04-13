@@ -27,5 +27,4 @@ const options = {
     apis: [path.join(__dirname, '../../docs/*.yaml')]
 };
 
-const swaggerSpecs = swaggerJsdoc(options);
-module.exports = swaggerSpecs;
+module.exports = swaggerJsdoc(options);
