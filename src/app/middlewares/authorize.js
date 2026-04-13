@@ -1,4 +1,3 @@
-const { ROLES } = require('../../utils/constants');
 const { t } = require('../../utils/i18n');
 
 module.exports = (roles = []) => {

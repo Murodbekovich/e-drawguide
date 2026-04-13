@@ -12,7 +12,7 @@ const authLimiter = rateLimit({
 });
 
 const apiLimiter = rateLimit({
-    windowMs: 1 * 60 * 1000,
+    windowMs: 60 * 1000,
     max: 50,
     message: {
         success: false,

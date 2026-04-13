@@ -8,7 +8,7 @@ const { checkSystemHealth } = require('../../../../utils/healthCheck');
 
 router.use('/auth', authRoutes);
 router.use('/admin', adminRoutes);
-router.use('/student', studentRoutes);
+router.use('/mobile', studentRoutes);
 router.use('/config', configRoutes);
 
 router.get('/health', async (req, res) => {

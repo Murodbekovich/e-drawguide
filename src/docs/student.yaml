@@ -1,7 +1,7 @@
 paths:
-  /student/library:
+  /mobile/library:
     get:
-      tags: [Student]
+      tags: [MOBILE APP]
       summary: Kutubxonadagi kitoblar ro'yxati
       security:
         - bearerAuth: []
@@ -16,9 +16,9 @@ paths:
         200:
           description: OK
 
-  /student/videos:
+  /mobile/videos:
     get:
-      tags: [Student]
+      tags: [MOBILE APP]
       summary: Video darslar ro'yxati
       security:
         - bearerAuth: []
@@ -26,35 +26,20 @@ paths:
         200:
           description: OK
 
-  /student/quizzes:
+  /mobile/quizzes:
     get:
-      tags: [Student]
-      summary: Mavjud faol testlar ro'yxati
+      tags: [MOBILE APP]
+      summary: Mavjud testlar ro'yxati
       security:
         - bearerAuth: []
       responses:
         200:
           description: OK
 
-  /student/quizzes/{id}:
-    get:
-      tags: [Student]
-      summary: Konkret test savollarini olish (To'g'ri javoblarsiz)
-      security:
-        - bearerAuth: []
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema: { type: string, format: uuid }
-      responses:
-        200:
-          description: OK
-
-  /student/quizzes/{id}/submit:
+  /mobile/quizzes/{id}/submit:
     post:
-      tags: [Student]
-      summary: Testni yakunlash va natijani topshirish
+      tags: [MOBILE APP]
+      summary: Test natijasini topshirish
       security:
         - bearerAuth: []
       parameters:
@@ -67,13 +52,11 @@ paths:
           application/json:
             schema:
               type: object
-              required: [answers]
               properties:
                 answers:
                   type: array
                   items:
                     type: object
-                    required: [question_id, selected_option]
                     properties:
                       question_id: { type: string, format: uuid }
                       selected_option: { type: string }
