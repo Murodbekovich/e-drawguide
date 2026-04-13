@@ -19,8 +19,9 @@ jobs:
             git fetch --all
             git reset --hard origin/main
             sudo chmod -R 777 logs uploads || true
-            docker compose down || true
-            docker compose up --build -d app
+            
+            docker compose up --build -d
+            
             sleep 5
             docker compose exec -T app npm run db:migrate
             docker system prune -f
