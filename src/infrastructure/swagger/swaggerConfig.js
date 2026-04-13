@@ -4,9 +4,12 @@ const path = require('path');
 const options = {
     definition: {
         openapi: '3.0.0',
-        info: { title: 'E-DrawGuide API', version: '1.0.0' },
+        info: { title: 'E-DrawGuide Professional API', version: '1.0.0' },
         servers: [{ url: '/api/v1' }],
-        tags: [{ name: 'ADMIN' }, { name: 'MOBILE' }],
+        tags: [
+            { name: 'ADMIN' },
+            { name: 'MOBILE' }
+        ],
         components: {
             securitySchemes: {
                 bearerAuth: {
@@ -18,7 +21,7 @@ const options = {
         },
         security: [{ bearerAuth: [] }]
     },
-    apis: [path.join(__dirname, '../../docs/all.yaml')]
+    apis: [path.join(__dirname, '../../docs/**/*.yaml')]
 };
 
 module.exports = swaggerJsdoc(options);
