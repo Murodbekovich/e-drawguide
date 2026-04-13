@@ -13,7 +13,7 @@ const swaggerJSDoc = require('swagger-jsdoc');
 const routes = require('./app/routes/api/v1/index');
 const errorHandler = require('./app/middlewares/errorHandler');
 const logger = require('./utils/logger');
-const { apiLimiter, authLimiter } = require('./app/middlewares/rateLimiters');
+const { apiLimiter } = require('./app/middlewares/rateLimiters');
 const setLang = require('./app/middlewares/setLang');
 
 const app = express();
@@ -42,8 +42,6 @@ app.use(morgan('combined', { stream: logger.stream }));
 app.use(cors({ origin: '*', credentials: true }));
 
 app.use('/api/', apiLimiter);
-app.use('/api/v1/auth/login', authLimiter);
-app.use('/api/v1/auth/register', authLimiter);
 
 const swaggerDefinition = {
     openapi: '3.0.0',
@@ -69,10 +67,7 @@ const swaggerDefinition = {
 };
 const swaggerOptions = {
     swaggerDefinition,
-    apis: [
-        path.join(__dirname, './docs/*.yaml'), // Agar docs src ichida bo'lsa
-        path.join(__dirname, '../docs/*.yaml')  // Agar docs src dan tashqarida bo'lsa
-    ],
+    apis: [path.join(__dirname, '../docs/*.yaml')],
 };
 const swaggerDocs = swaggerJSDoc(swaggerOptions);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs, {
@@ -88,7 +83,7 @@ app.use(express.urlencoded({ limit: '100mb', extended: true }));
 app.use(setLang);
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 app.use('/api/v1', routes);
-app.use('/api/v1/auth', routes);
+
 if (process.env.SENTRY_DSN) {
     app.use(Sentry.Handlers.errorHandler());
 }
