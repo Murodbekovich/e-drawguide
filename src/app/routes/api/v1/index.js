@@ -6,12 +6,12 @@ const studentRoutes = require('./student');
 const configRoutes = require('./config');
 const { checkSystemHealth } = require('../../../../utils/healthCheck');
 
-router.use('/auth', authRoutes);
+router.use('/mobile/auth', authRoutes);
 router.use('/admin', adminRoutes);
 router.use('/mobile', studentRoutes);
-router.use('/config', configRoutes);
+router.use('/mobile/config', configRoutes);
 
-router.get('/health', async (req, res) => {
+router.get('/mobile/health', async (req, res) => {
     const health = await checkSystemHealth();
     res.status(health.status === 'healthy' ? 200 : 503).json(health);
 });

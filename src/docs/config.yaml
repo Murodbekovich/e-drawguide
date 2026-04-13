@@ -1,9 +1,9 @@
 paths:
-  /config/check-version:
+  /mobile/config/check-version:
     get:
       tags: [MOBILE]
       summary: Versiyani tekshirish
-  /health:
+  /mobile/health:
     get:
       tags: [MOBILE]
       summary: Health check

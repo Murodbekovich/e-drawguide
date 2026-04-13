@@ -1,13 +1,31 @@
 paths:
-  /auth/register:
+  /mobile/auth/register:
     post:
       tags: [MOBILE]
       summary: Ro'yxatdan o'tish
-  /auth/login:
+  /mobile/auth/login:
     post:
       tags: [MOBILE]
       summary: Login
-  /auth/profile:
+  /mobile/auth/logout:
+    post:
+      tags: [MOBILE]
+      summary: Logout
+      security:
+        - bearerAuth: []
+  /mobile/auth/profile:
     get:
       tags: [MOBILE]
       summary: Profil
+      security:
+        - bearerAuth: []
+  /mobile/auth/my-results:
+    get:
+      tags: [MOBILE]
+      summary: Natijalar tarixi
+      security:
+        - bearerAuth: []
+  /mobile/auth/refresh:
+    post:
+      tags: [MOBILE]
+      summary: Token yangilash

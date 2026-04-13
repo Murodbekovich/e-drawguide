@@ -5,63 +5,23 @@ components:
       properties:
         id: { type: string, format: uuid }
         full_name: { type: string }
-        phone: { type: string }
-        login: { type: string }
-        role: { type: string, enum: [admin, student] }
-        created_at: { type: string, format: date-time }
-
     Video:
       type: object
       properties:
         id: { type: string, format: uuid }
         title: { type: string }
-        description: { type: string }
-        video_url: { type: string }
-        thumbnail_url: { type: string }
-        is_youtube: { type: boolean }
-        created_at: { type: string, format: date-time }
-
     Library:
       type: object
       properties:
         id: { type: string, format: uuid }
         title: { type: string }
-        author: { type: string }
-        language: { type: string, enum: [uz, ru, en] }
-        file_url: { type: string }
-        cover_url: { type: string }
-        created_at: { type: string, format: date-time }
-
     Quiz:
       type: object
       properties:
         id: { type: string, format: uuid }
         title: { type: string }
-        is_active: { type: boolean }
-        created_at: { type: string, format: date-time }
-
-    Question:
-      type: object
-      properties:
-        id: { type: string, format: uuid }
-        question_text: { type: string }
-        options:
-          type: array
-          items: { type: object }
-        correct_answer: { type: string }
-
     Result:
       type: object
       properties:
         result_id: { type: string, format: uuid }
-        correct: { type: integer }
-        total: { type: integer }
-        percentage: { type: number }
-        submitted_at: { type: string, format: date-time }
-
-    Error:
-      type: object
-      properties:
-        success: { type: boolean, example: false }
-        message: { type: string }
-        errorCode: { type: string }
+        score: { type: integer }
