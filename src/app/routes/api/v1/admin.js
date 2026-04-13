@@ -6,12 +6,20 @@ const upload = require('../../../middlewares/upload');
 const { checkFileSignature } = require('../../../middlewares/fileSecurity');
 const validate = require('../../../middlewares/validate');
 const auditLogger = require('../../../middlewares/auditLogger');
-const { adminLibraryController, adminVideoController, userController, quizController } = require('../../../../infrastructure/container');
+
+const {
+    adminLibraryController,
+    adminVideoController,
+    userController,
+    quizController,
+    authController
+} = require('../../../../infrastructure/container');
+
 const { createLibrarySchema } = require('../../../requests/library/LibraryRequest');
 const { createVideoSchema } = require('../../../requests/video/VideoRequest');
 const { addQuestionSchema } = require('../../../requests/quiz/QuizRequest');
 
-router.post('/auth/login', adminLibraryController.login);
+router.post('/auth/login', authController.adminLogin);
 
 router.use(authenticate, authorize('admin'));
 
