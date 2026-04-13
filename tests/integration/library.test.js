@@ -11,7 +11,7 @@ describe('Library Integration Tests', () => {
         await sequelize.sync({ force: true });
         const hashedPassword = await bcrypt.hash('Admin@12345', 12);
         await User.create({ full_name: 'Super Admin', login: 'super_admin', phone: '998900000000', password: hashedPassword, role: 'admin' });
-        const res = await request(app).post('/api/v1/auth/admin/login').send({ login: 'super_admin', password: 'Admin@12345' });
+        const res = await request(app).post('/api/v1/admin/auth/login').send({ login: 'super_admin', password: 'Admin@12345' });
         adminToken = res.body.access_token;
     });
     test('Admin yangi kitob yuklay olishi kerak', async () => {
