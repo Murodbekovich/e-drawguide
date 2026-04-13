@@ -88,7 +88,7 @@ app.use(express.urlencoded({ limit: '100mb', extended: true }));
 app.use(setLang);
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 app.use('/api/v1', routes);
-
+app.use('/api/v1/auth', routes);
 if (process.env.SENTRY_DSN) {
     app.use(Sentry.Handlers.errorHandler());
 }
