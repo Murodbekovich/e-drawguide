@@ -9,7 +9,6 @@ const xss = require('xss-clean');
 const Sentry = require('@sentry/node');
 const swaggerUi = require('swagger-ui-express');
 const swaggerJSDoc = require('swagger-jsdoc');
-
 const routes = require('./app/routes/api/v1/index');
 const errorHandler = require('./app/middlewares/errorHandler');
 const logger = require('./utils/logger');
@@ -25,11 +24,6 @@ if (process.env.SENTRY_DSN) {
     app.use(Sentry.Handlers.requestHandler());
 }
 
-app.use('/api-docs', (req, res, next) => {
-    res.setHeader("Content-Security-Policy", "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdnjs.cloudflare.com; style-src 'self' 'https:' 'unsafe-inline'; img-src 'self' data: https:;");
-    next();
-});
-
 app.use(helmet({
     contentSecurityPolicy: false,
     crossOriginResourcePolicy: false
@@ -40,8 +34,6 @@ app.use(hpp());
 app.use(compression());
 app.use(morgan('combined', { stream: logger.stream }));
 app.use(cors({ origin: '*', credentials: true }));
-
-app.use('/api/', apiLimiter);
 
 const swaggerDefinition = {
     openapi: '3.0.0',
@@ -68,7 +60,7 @@ const swaggerDefinition = {
 
 const swaggerOptions = {
     swaggerDefinition,
-    apis: [path.join(__dirname, './app/routes/api/v1/*.js'), path.join(__dirname, './docs/*.yaml')],
+    apis: [path.join(__dirname, './docs/*.yaml')],
 };
 
 const swaggerDocs = swaggerJSDoc(swaggerOptions);
@@ -83,6 +75,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs, {
 app.use(express.json({ limit: '100mb' }));
 app.use(express.urlencoded({ limit: '100mb', extended: true }));
 app.use(setLang);
+app.use('/api/', apiLimiter);
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 app.use('/api/v1', routes);
 
